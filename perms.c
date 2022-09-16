@@ -89,11 +89,6 @@ void free_perm(perm* g) // Frees memory allocated to g.
 }
 
 
-
-
-
-
-
 /*
 bool array_eq(int *x, int *y, int n) //Auxillary function - given two length n arrays, returns if they are equal.  
 {
@@ -104,7 +99,6 @@ bool array_eq(int *x, int *y, int n) //Auxillary function - given two length n a
 
 int array_compare(int* x, int* y, int n) // Returns first nonequal location in two length n int arrays and -1 if equal.
 {
-
 	int i = 0;
 	while (i < n)
 	{
@@ -112,8 +106,9 @@ int array_compare(int* x, int* y, int n) // Returns first nonequal location in t
 		i++;
 	}
 	return -1;
-
 }
+
+
 
 Linked_list* perm_to_cyle(perm* g)
 {
@@ -126,15 +121,23 @@ Linked_list* perm_to_cyle(perm* g)
 		all_ones[i] = 1; //Keeps track of the visited numbers and compares.  
 	}
 
+	int i;
 	int cycle_number = 0;
-	while (!(array_compare(visited, all_ones, n) == -1))
+	while (! ((i = array_compare(visited, all_ones, n)) == -1) )
 	{
-		//L[cycle_number] = init_linked_list();
-	
-	}
-	
-	
+		visited[i] = 1;
+		L[cycle_number] = init_linked_list(i + 1);
 
+
+		int j;
+		while ((j = perm_action(g, i + 1)) != i + 1) 
+		{
+			add_linked_list_end(L[cycle_number], j);
+			i = j - 1;
+			visited[i] = 1;
+		}
+		cycle_number++;		
+	}
 	return L;	
 }
 
@@ -146,22 +149,15 @@ void print_cycle_decomposition(perm* g)
 */
 
 
-
-
-
-
 int main() 
 {
-
 	int g_array[] = {1,3,2};
 	Perm g = perm_initialize(g_array, 3);
 	print_perm(g);
 	
-	
 	int h_array[] = {1,2,3};
 	Perm h = perm_initialize(h_array, 3);
 	print_perm(h);
-
 
 	Perm gh = perm_mult(g,h);
 	print_perm(gh);
@@ -188,8 +184,7 @@ int main()
 
 	printf("%d\n",perm_action(g,2));
 
-
-	free_perm(g);
+	//free_perm(g);
 	free_perm(h);
 
 	Linked_list l = init_linked_list(0);
@@ -199,13 +194,16 @@ int main()
 	print_linked_list(l);
 	free_linked_list(l);
 
-
 	int x[3] = {1,2,3};
 	int y[3] = {1,2,4};
 	int z[3] = {1,2,3};
 	printf("%d\n", array_compare(x,y,3));
 	printf("%d\n", array_compare(x,z,3));
 
+
+	//Some indexing is off and it is cycling forever...
+	//perm_to_cyle(g);
+	
 
 // To do: random permutation.  
 
