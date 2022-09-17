@@ -113,27 +113,24 @@ Linked_list* perm_to_cycle(perm* g) //Builds an array of cicular linked lists de
 
 	int i;
 	int cycle_number = 0;
-	
-	
-	while (! ( array_compare(visited, all_ones, n) == -1) )
-	{
+	while (! ( array_compare(visited, all_ones, n) == -1) )   
+	{							  
 		i = array_compare(visited, all_ones, n);
 		visited[i] = 1;
-		L[cycle_number] = init_linked_list(i + 1); 
+		L[cycle_number] = init_linked_list(i + 1); 	
 
 		int j;
-		while (visited[j = perm_action(g, i + 1) - 1] != 1)  // Something wrong here. 
+		while (visited[j = perm_action(g, i + 1) - 1] == 0)  
 		{						    
-			add_linked_list_end(L[cycle_number], j + 1);
+			add_linked_list_end(L[cycle_number], j + 1); 
 			visited[j] = 1;
+			i = j;			
 		}
 		cycle_number++;		
 	}
 	return L;
 }
 
-
-// Does not currently work....
 void free_linked_list_array(Linked_list* L, perm* g) // Auxillary function used to free the linked list array created in perm_to_cycle.  
 {
 	int n = g->parent_group;
@@ -166,7 +163,7 @@ void print_cycle_decomposition(perm* g)
 
 int main() 
 {
-/*
+
 	int g_array[] = {1,3,2};
 	Perm g = perm_initialize(g_array, 3);
 	print_perm(g);
@@ -186,7 +183,7 @@ int main()
 
 	print_cycle_decomposition(g);
 	print_cycle_decomposition(h);	
-*/
+
 	int k_array[] = {2,6,1,5,3,7,4};   //1 -> 2 -> 6 -> 7 -> 4 -> 5 -> 3 ->1
 	Perm k = perm_initialize(k_array, 7);
 	print_perm(k);
@@ -200,24 +197,11 @@ int main()
 
 	print_cycle_decomposition(k);   //This is coming out wrong.
 
-	//Linked_list* L = perm_to_cycle(g);
+	Linked_list* L = perm_to_cycle(g);
 
-	//free_linked_list(L[0]);
-	//free_linked_list(L[1]);
-	//free_linked_list(L[2]);  //This is the issue... It is pointing to null....
-	//free(L);
-
-	//printf((L[3] == NULL) ? "true\n" : "false\n");
-	/*	
-	int n = g->parent_group;
-	for (int i = 0; i < n; i++)
-	{
-		free_linked_list(L[i]);
-	}
 	free(L);
-	*/
-	//free(g);
-	//free(h);
+	free(g);
+	free(h);
 	free(k);
 
 	return 0;
