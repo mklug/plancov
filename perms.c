@@ -122,7 +122,7 @@ Linked_list* perm_to_cycle(perm* g) //Builds an array of cicular linked lists de
 		L[cycle_number] = init_linked_list(i + 1); 
 
 		int j;
-		while (visited[j = perm_action(g, i + 1) - 1] != 1)   
+		while (visited[j = perm_action(g, i + 1) - 1] != 1)  // Something wrong here. 
 		{						    
 			add_linked_list_end(L[cycle_number], j + 1);
 			visited[j] = 1;
@@ -158,7 +158,7 @@ void print_cycle_decomposition(perm* g)
 		{
 			print_linked_list(L[i]);
 		}	
-	//free(L);	
+	//free_linked_list_array(L, g);	
 	}
 }
 
@@ -166,6 +166,7 @@ void print_cycle_decomposition(perm* g)
 
 int main() 
 {
+/*
 	int g_array[] = {1,3,2};
 	Perm g = perm_initialize(g_array, 3);
 	print_perm(g);
@@ -178,49 +179,46 @@ int main()
 	print_perm(gh);
 
 	printf(perm_EQ(g,h) ? "true" : "false");	
-	printf("\n");	
-	printf(perm_EQ(g,gh) ? "true" : "false");	
-	printf("\n");	
-	printf(perm_EQ(h,gh) ? "true" : "false");	
-	printf("\n");	
-
-	int k_array[] = {1,3,2,5,6,4,7};
-	Perm k = perm_initialize(k_array, 7);
-	print_perm(k);
-	print_perm(perm_inverse(k));
-	print_perm(perm_mult(perm_inverse(k),k));
-
-	print_perm(perm_inverse(perm_inverse(k)));
-	print_perm(id_perm(10));
-	printf(perm_EQ(perm_mult(k,perm_inverse(k)),id_perm(7)) ? "true" : "false");	
 	printf("\n");
-	printf("%d\n",perm_action(g,2));
-
-	Linked_list l = init_linked_list(0);
-	add_linked_list_end(l,1);
-	add_linked_list_end(l,2);
-	add_linked_list_end(l,3);
-	print_linked_list(l);
-	free_linked_list(l);
-
-	int x[3] = {1,2,3};
-	int y[3] = {1,2,4};
-	int z[3] = {1,2,3};
-	printf("%d\n", array_compare(x,y,3));
-	printf("%d\n", array_compare(x,z,3));
-
-
-// To do: random permutation.  
 
 	perm_to_cycle(g);
 	perm_to_cycle(h);
 
 	print_cycle_decomposition(g);
-	print_cycle_decomposition(h);
+	print_cycle_decomposition(h);	
+*/
+	int k_array[] = {2,6,1,5,3,7,4};   //1 -> 2 -> 6 -> 7 -> 4 -> 5 -> 3 ->1
+	Perm k = perm_initialize(k_array, 7);
+	print_perm(k);
+	print_perm(perm_inverse(k));
 
+	print_perm(id_perm(10));
+	printf(perm_EQ(perm_mult(k,perm_inverse(k)),id_perm(7)) ? "true" : "false");	
+	printf("\n");
 
-	free(g);
-	free(h);
+// To do: random permutation.  
+
+	print_cycle_decomposition(k);   //This is coming out wrong.
+
+	//Linked_list* L = perm_to_cycle(g);
+
+	//free_linked_list(L[0]);
+	//free_linked_list(L[1]);
+	//free_linked_list(L[2]);  //This is the issue... It is pointing to null....
+	//free(L);
+
+	//printf((L[3] == NULL) ? "true\n" : "false\n");
+	/*	
+	int n = g->parent_group;
+	for (int i = 0; i < n; i++)
+	{
+		free_linked_list(L[i]);
+	}
+	free(L);
+	*/
+	//free(g);
+	//free(h);
+	free(k);
 
 	return 0;
 }

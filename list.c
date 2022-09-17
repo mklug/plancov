@@ -63,6 +63,11 @@ void free_link(link x)
 
 void free_linked_list(linked_list* l) // Frees the linked list.
 {
+	if (l == NULL)
+	{
+		free(l);
+	 	return;     
+	}  
 	link x = l->head;
 	link y = x->next;
 	while (y != l->head)
