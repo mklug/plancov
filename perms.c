@@ -88,15 +88,6 @@ void free_perm(perm* g) // Frees memory allocated to g.
 	free(g);
 }
 
-
-/*
-bool array_eq(int *x, int *y, int n) //Auxillary function - given two length n arrays, returns if they are equal.  
-{
-	for (int i = 0; i<n; i++) {if (x[i] != y[i]) return false;}
-	return true;
-}
-*/
-
 int array_compare(int* x, int* y, int n) // Returns first nonequal location in two length n int arrays and -1 if equal.
 {
 	int i = 0;
@@ -108,12 +99,11 @@ int array_compare(int* x, int* y, int n) // Returns first nonequal location in t
 	return -1;
 }
 
-
-
-Linked_list* perm_to_cyle(perm* g)
+Linked_list* perm_to_cycle(perm* g) //Builds an array of cicular linked lists describing the cycle decomposition of g.  
 {
 	int n = g->parent_group;
 	Linked_list* L = malloc(n*sizeof(Linked_list)); // Storing the cylces.  
+	for (int i = 0; i < n; i++) L[i] = NULL;
 	int visited[n], all_ones[n];
 	for (int i = 0; i < n; i++) 
 	{	
@@ -123,30 +113,55 @@ Linked_list* perm_to_cyle(perm* g)
 
 	int i;
 	int cycle_number = 0;
-	while (! ((i = array_compare(visited, all_ones, n)) == -1) )
+	
+	
+	while (! ( array_compare(visited, all_ones, n) == -1) )
 	{
+		i = array_compare(visited, all_ones, n);
 		visited[i] = 1;
-		L[cycle_number] = init_linked_list(i + 1);
-
+		L[cycle_number] = init_linked_list(i + 1); 
 
 		int j;
-		while ((j = perm_action(g, i + 1)) != i + 1) 
-		{
-			add_linked_list_end(L[cycle_number], j);
-			i = j - 1;
-			visited[i] = 1;
+		while (visited[j = perm_action(g, i + 1) - 1] != 1)   
+		{						    
+			add_linked_list_end(L[cycle_number], j + 1);
+			visited[j] = 1;
 		}
 		cycle_number++;		
 	}
-	return L;	
+	return L;
 }
 
-/*
+
+// Does not currently work....
+void free_linked_list_array(Linked_list* L, perm* g) // Auxillary function used to free the linked list array created in perm_to_cycle.  
+{
+	int n = g->parent_group;
+	for (int i = 0; i < n; i++)
+	{
+		free_linked_list(L[i]);
+	}
+	free(L);
+}
+
+
+// Need to add the freeing call....
 void print_cycle_decomposition(perm* g)
 {
-
+	printf("The cycle decomposition is:\n");
+	Linked_list* L;
+	L = perm_to_cycle(g);
+	int n = g->parent_group;
+	for (int i = 0; i < n; i++)
+	{
+		if (L[i] != NULL) 
+		{
+			print_linked_list(L[i]);
+		}	
+	//free(L);	
+	}
 }
-*/
+
 
 
 int main() 
@@ -176,16 +191,10 @@ int main()
 	print_perm(perm_mult(perm_inverse(k),k));
 
 	print_perm(perm_inverse(perm_inverse(k)));
-
 	print_perm(id_perm(10));
-
 	printf(perm_EQ(perm_mult(k,perm_inverse(k)),id_perm(7)) ? "true" : "false");	
 	printf("\n");
-
 	printf("%d\n",perm_action(g,2));
-
-	//free_perm(g);
-	free_perm(h);
 
 	Linked_list l = init_linked_list(0);
 	add_linked_list_end(l,1);
@@ -201,12 +210,17 @@ int main()
 	printf("%d\n", array_compare(x,z,3));
 
 
-	//Some indexing is off and it is cycling forever...
-	//perm_to_cyle(g);
-	
-
 // To do: random permutation.  
 
+	perm_to_cycle(g);
+	perm_to_cycle(h);
+
+	print_cycle_decomposition(g);
+	print_cycle_decomposition(h);
+
+
+	free(g);
+	free(h);
 
 	return 0;
 }
