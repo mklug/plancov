@@ -18,29 +18,29 @@ void destroyArray(int** arr) // Frees memory allocated to an array.
     free(arr);
 }
 
-
-
 // Needs to be tested!!
 int** readAdjacencyMatrix(char* fileName) // Reads adjacency matrix from a file.  First line is numbers "V E".
 					  // Other lines are the edges (e.g., 2 3 or 0 1).
+					  // Must have line end on the last edge line also.
 {
-	FILE *p = fopen("fileName", "r");
-	if (p == NULL) printf("Error when opening the file.");
+	FILE *fp = fopen(fileName, "r");
+	if (fp == NULL) 
+	{
+		printf("Error when opening the file."); 
+	}
 
-	int V, E;
-	scanf("%d %d\n",&V, &E);
+	int V, E; 
+	fscanf(fp, "%d %d[^\n]",&V, &E);
 	int** arr = createArray(V, V);
-
-	int x, y;
+	int x, y; 
 
 	for (int i=0; i<V; i++) arr[i][i] = 0;  // Make the diagonal all 0.
-	for (int j =0; j<E; j++)
+	for (int j=0; j<E; j++)
 	{
-		scanf("%d %d\n", &x, &y);
+		fscanf(fp, "%d %d[^\n]", &x, &y);
 		arr[x][y] = arr[y][x] = 1;
 	}	
-
-	fclose(p);
+	fclose(fp);
 	return arr;
 }
 
@@ -58,6 +58,7 @@ void printArray(int** arr, int m, int n)
 
 int main()
 {
+	/*
 	int** arr = createArray(2,2);
 	arr[0][0] = 1;
 	arr[0][1] = 2;
@@ -66,4 +67,15 @@ int main()
 	
 	printArray(arr, 2, 2);
 	destroyArray(arr);
+	*/
+	// Just the file name call i want is not working.
+	//int** b = readAdjacencyMatrix("/graphs/k3_3");
+	
+
+
+	int** b = readAdjacencyMatrix("graphs/k3_3");
+	//FILE* q = fopen("perms.c", "r");
+	//fclose(q);
+	printArray(b, 6, 6);
+
 }
