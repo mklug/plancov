@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int** createArray(int m, int n) // Creates an m-by-n array.  Returns is filled with 0s.
 {
@@ -18,7 +19,6 @@ void destroyArray(int** arr) // Frees memory allocated to an array.
     free(arr);
 }
 
-// Needs to be tested!!
 int** readAdjacencyMatrix(char* fileName) // Reads adjacency matrix from a file.  First line is numbers "V E".
 					  // Other lines are the edges (e.g., 2 3 or 0 1).
 					  // Must have line end on the last edge line also.
@@ -44,7 +44,21 @@ int** readAdjacencyMatrix(char* fileName) // Reads adjacency matrix from a file.
 	return arr;
 }
 
-void printArray(int** arr, int m, int n)
+int** randAdjacencyMatrix(int V) // Returns a random adjacency matrix wiht each edge with probability 0.5.
+{
+	srand(time(NULL));
+	int** arr = createArray(V, V);
+	for (int i=0; i<V; i++) arr[i][i] = 0; 
+	for (int i=0; i<V; i++)
+		for (int j=0; j<i; j++)
+		{
+			arr[i][j] = arr[j][i] = rand() % 2;
+		
+		}
+	return arr;
+}
+
+void printArray(int** arr, int m, int n) // Prints an array.
 {
 	for (int i=0; i<m; i++)
 	{
@@ -70,12 +84,20 @@ int main()
 	*/
 	// Just the file name call i want is not working.
 	//int** b = readAdjacencyMatrix("/graphs/k3_3");
-	
 
+	int** a = readAdjacencyMatrix("graphs/k4");
+	printArray(a, 4, 4);
 
 	int** b = readAdjacencyMatrix("graphs/k3_3");
-	//FILE* q = fopen("perms.c", "r");
-	//fclose(q);
 	printArray(b, 6, 6);
+
+	int** c = readAdjacencyMatrix("graphs/k5");
+	printArray(c, 5, 5);
+
+	int** p = readAdjacencyMatrix("graphs/petersen");
+	printArray(p, 10, 10);
+
+	printf("\n\n\n");
+	printArray(randAdjacencyMatrix(30),30,30);
 
 }
