@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "list.h"
+#include <time.h>
 
 struct perm 
 {
@@ -159,11 +160,34 @@ void print_cycle_decomposition(perm* g)
 	}
 }
 
+// Auxillary function -- interchanges two values.   
+void swap (int *a, int *b)
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
 
+// Produces a random permutation on n letters. 
+// WARNING - if you call multiple times a second, it will be the same.
+perm* random_perm (int n)
+{
+	srand(time(NULL));
+	int array[n];
+	for (int i=0; i<n; i++) array[i] = i+1;
+	perm* g = perm_initialize(array, n);
+
+	for (int i = n-1; i > 0; i--)
+	{
+		int j = rand() % (i+1);
+		swap(&g->array[i], &g->array[j]);
+    	}
+	return g;
+}
 
 int main() 
 {
-
+/*
 	int g_array[] = {1,3,2};
 	Perm g = perm_initialize(g_array, 3);
 	print_perm(g);
@@ -195,14 +219,16 @@ int main()
 
 // To do: random permutation.  
 
-	print_cycle_decomposition(k);   //This is coming out wrong.
-
 	Linked_list* L = perm_to_cycle(g);
-
 	free(L);
 	free(g);
 	free(h);
 	free(k);
+*/
+	perm* g0 = random_perm(12);
+	print_perm(g0);
+	print_cycle_decomposition(g0);
+	free(g0);
 
 	return 0;
 }
