@@ -7,10 +7,7 @@ int** createArray(int m, int n) // Creates an m-by-n array.  Returns is filled w
 {
     int* values = calloc(m*n, sizeof(int));
     int** rows = malloc(m*sizeof(int*));
-    for (int i=0; i<m; ++i)
-    {
-        rows[i] = values + i*n;
-    }
+    for (int i=0; i<m; ++i) rows[i] = values + i*n;
     return rows;
 }
 
@@ -25,10 +22,7 @@ int** readAdjacencyMatrix(char* fileName) // Reads adjacency matrix from a file.
 					  // Must have line end on the last edge line also.
 {
 	FILE *fp = fopen(fileName, "r");
-	if (fp == NULL) 
-	{
-		printf("Error when opening the file."); 
-	}
+	if (fp == NULL) printf("Error when opening the file."); 
 
 	int V, E; 
 	fscanf(fp, "%d %d[^\n]",&V, &E);
@@ -51,11 +45,7 @@ int** randAdjacencyMatrix(int V) // Returns a random adjacency matrix wiht each 
 	int** arr = createArray(V, V);
 	for (int i=0; i<V; i++) arr[i][i] = 0; 
 	for (int i=0; i<V; i++)
-		for (int j=0; j<i; j++)
-		{
-			arr[i][j] = arr[j][i] = rand() % 2;
-		
-		}
+		for (int j=0; j<i; j++) arr[i][j] = arr[j][i] = rand() % 2;
 	return arr;
 }
 
@@ -63,15 +53,11 @@ void printArray(int** arr, int m, int n) // Prints an array.
 {
 	for (int i=0; i<m; i++)
 	{
-		for (int j=0; j<n; j++)
-		{
-			printf("%d ", arr[i][j]);
-		}
+		for (int j=0; j<n; j++) printf("%d ", arr[i][j]);
 		printf("\n");
 	}	
 }
 
-// To do: adjacency list graph implementation.  
 // Recursive implementation of depth-first search connectivity algorithm.
 //bool is_connected(int** arr, int V)
 //{
@@ -96,10 +82,7 @@ adjacencyList* createAdjacencyList(int V)
 	adjacencyList* G = malloc(sizeof(adjacencyList));
 	G->size = V;
 	G->array = malloc(V*sizeof(link*));
-	for (int i=0; i<V; i++)
-	{
-		G->array[i] = NULL;
-	}
+	for (int i=0; i<V; i++) G->array[i] = NULL;
 	return G;
 }
 
@@ -197,21 +180,44 @@ adjacencyList* matrixToList(int** arr, int V)
 	return G;
 }
 
+// Connectivity algorithm (a recursive implementaion of depth-first search.
+
+void traverse(int k, adjacencyList* G, int* visited)
+{
+	link t;
+	visited[k] = 1;
+	int V = G->size;
+	for (t = G->array[k]; t != NULL; t = t->next)
+		if (!visited[t->item]) traverse(t->item, G, visited);
+}
+
+bool isConnectedList(adjacencyList* G)
+{
+	int* visited = calloc(G->size, sizeof(Item));
+	if (visited==NULL)
+	{
+		printf("Error allocating memory in isConnectedList\n");
+		return false;
+	}
+	traverse(0, G, visited);
+	bool b = true;
+	for (int i = 0; i < G->size; i++)
+		if (visited[i] != 1)
+		{
+			b = false;
+			break;
+		}
+	free(visited);
+	return b;
+}
+
+bool isConnectedMatrix(int** arr, int V)
+{return isConnectedList(matrixToList(arr,V));}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 int main()
 {
-	/*
-	int** arr = createArray(2,2);
-	arr[0][0] = 1;
-	arr[0][1] = 2;
-	arr[1][0] = 3;
-	arr[1][1] = 4;
-	
-	printArray(arr, 2, 2);
-	destroyArray(arr);
-	*/
-	// Just the file name call i want is not working.
-	//int** b = readAdjacencyMatrix("/graphs/k3_3");
-	/*
 	int** a = readAdjacencyMatrix("graphs/k4");
 	printArray(a, 4, 4);
 
@@ -223,37 +229,21 @@ int main()
 
 	int** p = readAdjacencyMatrix("graphs/petersen");
 	printArray(p, 10, 10);
+	printAdjacencyList(matrixToList(p,10));
 
 	printf("\n\n\n");
 	printArray(randAdjacencyMatrix(30),30,30);
-	*/
-
+	
 	int** d = randAdjacencyMatrix(20);
 	adjacencyList* H = matrixToList(d,20);
 	printAdjacencyList(H);
 	printArray(d,20,20);
 
-	adjacencyList* G = createAdjacencyList(4);
-	//printf(al==NULL?"true\n":"false\n");
-	//al = new_b;
+	printf("The graph is connected? ");
 
-	addVertxAdjacencyList(G, 0, 1);
-	addVertxAdjacencyList(G, 0, 2);
-	addVertxAdjacencyList(G, 0, 3);
-	addVertxAdjacencyList(G, 1, 3);
-	addVertxAdjacencyList(G, 1, 0);
+	int n = 5;
+	int** mat = randAdjacencyMatrix(n);
+	printf( isConnectedMatrix(mat, n) ? "true\n" : "false\n" );
+	printArray(mat, n, n);
 
-
-
-	printf(isEdge(G,0,1)?"true\n":"false\n");
-	printf(isEdge(G,0,2)?"true\n":"false\n"); // Loops forever. 
-	printf(isEdge(G,1,3)?"true\n":"false\n"); 
-	printf(isEdge(G,2,3)?"true\n":"false\n"); 
-
-
-	printf(G->array[0]==NULL?"true\n":"false\n"); 
-	//printf("%d\n", (G->array[0])->item);
-
-	printAdjacencyList(G);
-	//destroyAdjacencyList(G);
 }
