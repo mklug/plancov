@@ -185,9 +185,11 @@ perm* random_perm (int n)
 	return g;
 }
 
+
+/*
 int main() 
 {
-/*
+
 	int g_array[] = {1,3,2};
 	Perm g = perm_initialize(g_array, 3);
 	print_perm(g);
@@ -224,11 +226,11 @@ int main()
 	free(g);
 	free(h);
 	free(k);
-*/
+
 	perm* g0 = random_perm(12);
 	print_perm(g0);
 	print_cycle_decomposition(g0);
 	free(g0);
 
 	return 0;
-}
+*/

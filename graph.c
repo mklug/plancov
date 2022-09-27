@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include "list.h"
 
 int** createArray(int m, int n) // Creates an m-by-n array.  Returns is filled with 0s.
 {
@@ -58,19 +59,6 @@ void printArray(int** arr, int m, int n) // Prints an array.
 	}	
 }
 
-// Recursive implementation of depth-first search connectivity algorithm.
-//bool is_connected(int** arr, int V)
-//{
-//}
-
-typedef int Item;
-typedef struct node* link;
-typedef struct node
-{
-Item item;
-link next;
-} node;
-
 typedef struct adjacencyList // Adjacency list representation of graphs.
 { 
 int size;
@@ -120,16 +108,6 @@ void printAdjacencyList(adjacencyList* G)
 		}
 		printf("\n");
 	}
-}
-
-// Note: this is redundant from the list.c file -- fix.  
-link init_link(Item n) // Initializes a node pointing to NULL with label n. Returns pointer to the node.
-{
-	link x;
-	x = malloc(sizeof(node));
-	x->next = NULL;
-	x->item = n;
-	return x;
 }
 
 bool isEdge(adjacencyList* G, int a, int b)
@@ -215,7 +193,7 @@ bool isConnectedMatrix(int** arr, int V)
 {return isConnectedList(matrixToList(arr,V));}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 int main()
 {
 	int** a = readAdjacencyMatrix("graphs/k4");
@@ -241,9 +219,11 @@ int main()
 
 	printf("The graph is connected? ");
 
-	int n = 5;
+	int n = 1000; //Currently waiting on 10000
 	int** mat = randAdjacencyMatrix(n);
 	printf( isConnectedMatrix(mat, n) ? "true\n" : "false\n" );
-	printArray(mat, n, n);
+	//printArray(mat, n, n);
 
 }
+*/
+
