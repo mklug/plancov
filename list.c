@@ -4,40 +4,40 @@
 // ADT implementation of circular linked lists.  
 
 typedef int Item; //Written this way to be more portable.
-typedef struct node *link;
-typedef struct node {Item item; link next;} node;
-typedef struct linked_list {link head; link tail;} linked_list; // For circular linked lists, the tail will point to the head.
+typedef struct node *my_link;
+typedef struct node {Item item; my_link next;} node;
+typedef struct linked_list {my_link head; my_link tail;} linked_list; // For circular linked lists, the tail will point to the head.
 					  			// This makes it easier to add links onto the end.  
 					   			// (They are equal when just initiated)
 
 typedef struct linked_list *Linked_list; 
 
-link init_link(Item n) // Initializes a node pointing to NULL with label n. Returns pointer to the node.
+my_link init_link(Item n) // Initializes a node pointing to NULL with label n. Returns pointer to the node.
 {
-	link x;
-	x = malloc(sizeof(node));
+	my_link x;
+	x = (my_link)malloc(sizeof(node));
 	x->next = NULL;
 	x->item = n;
 	return x;
 }
 
 // Inserts the link t between x and x->next.  
-void insert_next(link x, link t)
+void insert_next(my_link x, my_link t)
 {t->next = x->next; x->next = t;}
 
 // Deletes the node after x and returns it.
-link delete_next(link x) 
+my_link delete_next(my_link x) 
 {
-	link t = x->next;
+	my_link t = x->next;
 	x->next = t->next;
 	return t;
 }
 
 linked_list* init_linked_list(Item n) // Initializes a circular linked list with head = tail and label n.
 {	
-	linked_list* l = malloc(sizeof(link));
-	link head, tail;
-	head = malloc(sizeof(node));
+	linked_list* l = (linked_list*)malloc(sizeof(my_link));
+	my_link head, tail;
+	head = (my_link)malloc(sizeof(node));
 	tail = head;
 	head->item = n; head->next = head; //This is the circular part.
 	tail = head;
@@ -45,7 +45,7 @@ linked_list* init_linked_list(Item n) // Initializes a circular linked list with
 	return l; 
 }
 
-void add_linked_list_end_(linked_list* l, link x) // Adds the link x to the linked list x at the tail.
+void add_linked_list_end_(linked_list* l, my_link x) // Adds the link x to the linked list x at the tail.
 {
 	insert_next(l->tail, x);
 	l->tail = x;
@@ -53,12 +53,12 @@ void add_linked_list_end_(linked_list* l, link x) // Adds the link x to the link
 
 void add_linked_list_end(linked_list* l, Item n) // Initializes a new link with item field n and adds to the tail of l.
 {
-	link x = init_link(n); 
+	my_link x = init_link(n); 
 	add_linked_list_end_(l,x);
 }
 
 
-void free_link(link x)
+void free_link(my_link x)
 {free(x);}
 
 void free_linked_list(linked_list* l) // Frees the linked list.
@@ -68,8 +68,8 @@ void free_linked_list(linked_list* l) // Frees the linked list.
 		free(l);
 	 	return;     
 	}  
-	link x = l->head;
-	link y = x->next;
+	my_link x = l->head;
+	my_link y = x->next;
 	while (y != l->head)
 	{
 		free_link(x);
@@ -83,7 +83,7 @@ void free_linked_list(linked_list* l) // Frees the linked list.
 void print_linked_list(linked_list* l) // Prints the linked list.
 {
 	printf("%d ", l->head->item);
-	link t = l->head->next;
+	my_link t = l->head->next;
 	while (t != l->head)
 	{
 		printf("%d ",t->item);
@@ -94,8 +94,8 @@ void print_linked_list(linked_list* l) // Prints the linked list.
 }
 
 
-// Demo for debugging if we need for features.  
-/*
+// Demo for debugging if we need for features.
+/*  
 int main(void) 
 {
 	linked_list* l = init_linked_list(0);
@@ -106,4 +106,3 @@ int main(void)
 	free_linked_list(l);
 }
 */
-

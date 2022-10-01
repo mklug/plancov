@@ -15,9 +15,9 @@ typedef struct perm* Perm;
 
 perm* perm_initialize(int *array, int n) // Initializes a permutation given by the array in S_n.
 {
-	perm* g = malloc(sizeof(perm));
+	perm* g = (perm*)malloc(sizeof(perm));
 	g->parent_group = n;
-	g->array = malloc(n*sizeof(int));
+	g->array = (int*)malloc(n*sizeof(int));
 	for (int i = 0; i < n; i++) (g->array)[i] = array[i];
 	return g;
 }
@@ -103,7 +103,7 @@ int array_compare(int* x, int* y, int n) // Returns first nonequal location in t
 Linked_list* perm_to_cycle(perm* g) //Builds an array of cicular linked lists describing the cycle decomposition of g.  
 {
 	int n = g->parent_group;
-	Linked_list* L = malloc(n*sizeof(Linked_list)); // Storing the cylces.  
+	Linked_list* L = (Linked_list*)malloc(n*sizeof(Linked_list)); // Storing the cylces.  
 	for (int i = 0; i < n; i++) L[i] = NULL;
 	int visited[n], all_ones[n];
 	for (int i = 0; i < n; i++) 
@@ -172,7 +172,7 @@ void swap (int *a, int *b)
 // WARNING - if you call multiple times a second, it will be the same.
 perm* random_perm (int n)
 {
-	srand(time(NULL));
+	//srand(time(NULL)); Need to call this inside of main.
 	int array[n];
 	for (int i=0; i<n; i++) array[i] = i+1;
 	perm* g = perm_initialize(array, n);

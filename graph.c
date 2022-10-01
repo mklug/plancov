@@ -6,8 +6,8 @@
 
 int** createArray(int m, int n) // Creates an m-by-n array.  Returns is filled with 0s.
 {
-    int* values = calloc(m*n, sizeof(int));
-    int** rows = malloc(m*sizeof(int*));
+    int* values = (int*)calloc(m*n, sizeof(int));
+    int** rows = (int**)malloc(m*sizeof(int*));
     for (int i=0; i<m; ++i) rows[i] = values + i*n;
     return rows;
 }
@@ -62,14 +62,14 @@ void printArray(int** arr, int m, int n) // Prints an array.
 typedef struct adjacencyList // Adjacency list representation of graphs.
 { 
 int size;
-link* array; 
+my_link* array; 
 } adjacencyList;
 
 adjacencyList* createAdjacencyList(int V)
 {
-	adjacencyList* G = malloc(sizeof(adjacencyList));
+	adjacencyList* G = (adjacencyList*)malloc(sizeof(adjacencyList));
 	G->size = V;
-	G->array = malloc(V*sizeof(link*));
+	G->array = (my_link*)malloc(V*sizeof(my_link*));
 	for (int i=0; i<V; i++) G->array[i] = NULL;
 	return G;
 }
@@ -78,10 +78,10 @@ void destroyAdjacencyList(adjacencyList* G)
 {
 	for (int i = 0; i<G->size; i++)
 	{
-		link x = G->array[i];
+		my_link x = G->array[i];
 		while (x != NULL)
 		{
-			link t = x->next;
+			my_link t = x->next;
 			free(x);
 			x = t;
 		}
@@ -95,7 +95,7 @@ void printAdjacencyList(adjacencyList* G)
 	for (int i=0; i<V; i++)
 	{
 		printf("%d: ",i);
-		link x = G->array[i];
+		my_link x = G->array[i];
 		if (x==NULL) ;
 		else
 		{
@@ -112,7 +112,7 @@ void printAdjacencyList(adjacencyList* G)
 
 bool isEdge(adjacencyList* G, int a, int b)
 {
-	link x = G->array[a];
+	my_link x = G->array[a];
 	if (x==NULL) return false;
 
 	while ((x->next)!=NULL)
@@ -126,10 +126,10 @@ bool isEdge(adjacencyList* G, int a, int b)
 void addVertxAdjacencyList(adjacencyList* G, int a, int b) // For vertices a and b in an adjacency list, add the edge ab.
 {
 	if ((a==b) || isEdge(G,a,b)) return;
-	link al = G->array[a];
-	link bl = G->array[b];
-	link new_a = init_link(a);
-	link new_b = init_link(b);
+	my_link al = G->array[a];
+	my_link bl = G->array[b];
+	my_link new_a = init_link(a);
+	my_link new_b = init_link(b);
 	if (al == NULL) G->array[a] = new_b;
 	else
 	{
@@ -162,7 +162,7 @@ adjacencyList* matrixToList(int** arr, int V)
 
 void traverse(int k, adjacencyList* G, int* visited)
 {
-	link t;
+	my_link t;
 	visited[k] = 1;
 	int V = G->size;
 	for (t = G->array[k]; t != NULL; t = t->next)
@@ -171,7 +171,7 @@ void traverse(int k, adjacencyList* G, int* visited)
 
 bool isConnectedList(adjacencyList* G)
 {
-	int* visited = calloc(G->size, sizeof(Item));
+	int* visited = (int*)calloc(G->size, sizeof(Item));
 	if (visited==NULL)
 	{
 		printf("Error allocating memory in isConnectedList\n");
