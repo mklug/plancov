@@ -223,7 +223,7 @@ int main()
 	int** mat = randAdjacencyMatrix(n);
 	printf( isConnectedMatrix(mat, n) ? "true\n" : "false\n" );
 	//printArray(mat, n, n);
-
+	
 }
 */
 

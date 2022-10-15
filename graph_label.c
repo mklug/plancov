@@ -52,10 +52,17 @@ graph* graphInitialize(char* fileName)
 }
 
 void graphDestroy(graph* G)
-{}
+{
+	destroyArray(G->adjacency_matrix);
+	free(G);
+}
 
 void labeledEdgeGraphDestroy(edge_labeled_graph* G_lab)
-{}
+{
+	//graphDestroy(&G_lab->graph);
+	free(G_lab->labeled_oriented_edges); // Is this freeing everything?
+	free(G_lab);
+}
 
 void printGraph(graph* G)
 {printArray(G->adjacency_matrix, G->V, G->V);}
@@ -120,11 +127,6 @@ graph* constructCover(edge_labeled_graph* G)
 			}
 	return G_cov;
 }
-
-
-// Make a spearate file with the planarity testing and whatnot.  
-
-
 /*
 int main()
 {
@@ -161,6 +163,10 @@ int main()
 	}
 	printf("%f\n", (float)(total_connected) / M );
 
+	graphDestroy(G);
+	graphDestroy(H);
+
+	labeledEdgeGraphDestroy(G_lab);
 }
 */
 
