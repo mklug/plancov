@@ -30,16 +30,35 @@ I did not find any counterexamples to Negami's conjecture -- maybe you will have
 
 ## setup ##
 
-The program is  written in java and thus requires a java virtual machine to run. The program
-can be compiled with the following command run from within the directory containing the java files
+You will need to have the boost library set up on hyour machine to run this program.  With that,
+on my machine, complilation works by running 
 
 ```
-> javac . -d *.java
+> c++ -std=c++11 -I ~/coding/c++/boost/boost_1_80_0 planar.cpp -o planar
 ``` 
-
+You will need to adjust the path to the boost library on your machine.  
 
 ## usage ##
 
+To run the program, use the command
+
+```
+> ./planar [path to graph] [number of trials] [max degree] [number of trials degree fixed]
+``` 
+you will pick `[number of trials]` many degrees at random, bounded above by `[max degree]`
+and then investigate the planarity of `[number of trials degree fixed]` many covers of 
+the graph with adjacency matrix in `[path to graph]` of that degree.
+
+By Just entering 
+
+```
+> ./planar
+``` 
+you can hunt around for some somewhat low degree planar covers of the aforementioned 7 vertex graph.
 
 
 ### further ideas ###
+
+This could likely all be sped up considerably by using a sparse graph implementation throughout.  
+I also wanted to investigate the likelyhood that some higher-genus analog of Negami's 
+conjecture might hold, however, testing even if a graph is toral is in practice tough.  
