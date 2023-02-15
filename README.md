@@ -60,7 +60,7 @@ There are several relevant and test graphs to play around with in the `graphs` d
 add your own.  The above review article suggests some other possible graphs to try.  
 
 
-### further ideas ###
+## further ideas ##
 
 This could likely all be sped up considerably by using a sparse graph implementation throughout.  I 
 also wanted to investigate the likelyhood that some higher-genus analog of Negami's conjecture 
