@@ -49,16 +49,19 @@ you will pick `[number of trials]` many degrees at random, bounded above by `[ma
 and then investigate the planarity of `[number of trials degree fixed]` many covers of 
 the graph with adjacency matrix in `[path to graph]` of that degree.
 
-By Just entering 
+By just entering 
 
 ```
 > ./planar
 ``` 
 you can hunt around for some somewhat low degree planar covers of the aforementioned 7 vertex graph.
 
+There are several relevant and test graphs to play around with in the `graphs` directory, feel free to 
+add your own.  The above review article suggests some other possible graphs to try.  
+
 
 ### further ideas ###
 
 This could likely all be sped up considerably by using a sparse graph implementation throughout.  
-I also wanted to investigate the likelyhood that some higher-genus analog of Negami's 
-conjecture might hold, however, testing even if a graph is toral is in practice tough.  
+I also wanted to investigate the likelyhood that some higher-genus analog of Negami's conjecture 
+ight hold, however, testing even if a graph is toral is in practice tough.  
