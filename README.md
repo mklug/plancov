@@ -62,6 +62,6 @@ add your own.  The above review article suggests some other possible graphs to t
 
 ### further ideas ###
 
-This could likely all be sped up considerably by using a sparse graph implementation throughout.  
-I also wanted to investigate the likelyhood that some higher-genus analog of Negami's conjecture 
+This could likely all be sped up considerably by using a sparse graph implementation throughout.  I 
+also wanted to investigate the likelyhood that some higher-genus analog of Negami's conjecture 
 ight hold, however, testing even if a graph is toral is in practice tough.  
